@@ -1,0 +1,783 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="图像处理,DSP,c," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="基于DSP的人脸检测  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，了解人脸检测常用方法，掌握模板匹配算法实现人脸检测的基本原理，并在 DSP 实验板上实现一般环境图像中单个正面人脸的检测，并在实验板的 LCD 显示屏进行显示。 二、实现方案实验原理本实验所探讨的是一般环境图像中单个正面端正人脸的检测问题。这种条件下的人脸检测的方法主要有模板匹配方法、可变">
+<meta name="keywords" content="图像处理,DSP,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于DSP的人脸检测">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/基于DSP的人脸检测/index.html">
+<meta property="og:site_name" content="YOYOE">
+<meta property="og:description" content="基于DSP的人脸检测  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，了解人脸检测常用方法，掌握模板匹配算法实现人脸检测的基本原理，并在 DSP 实验板上实现一般环境图像中单个正面人脸的检测，并在实验板的 LCD 显示屏进行显示。 二、实现方案实验原理本实验所探讨的是一般环境图像中单个正面端正人脸的检测问题。这种条件下的人脸检测的方法主要有模板匹配方法、可变">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B81.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B82.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B83.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B84.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B85.png">
+<meta property="og:updated_time" content="2017-04-29T11:16:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于DSP的人脸检测">
+<meta name="twitter:description" content="基于DSP的人脸检测  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，了解人脸检测常用方法，掌握模板匹配算法实现人脸检测的基本原理，并在 DSP 实验板上实现一般环境图像中单个正面人脸的检测，并在实验板的 LCD 显示屏进行显示。 二、实现方案实验原理本实验所探讨的是一般环境图像中单个正面端正人脸的检测问题。这种条件下的人脸检测的方法主要有模板匹配方法、可变">
+<meta name="twitter:image" content="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B81.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/28/基于DSP的人脸检测/"/>
+
+
+
+
+
+  <title>基于DSP的人脸检测 | YOYOE</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YOYOE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">It fills you with determination.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/28/基于DSP的人脸检测/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZHOU Ziyue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YOYOE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于DSP的人脸检测
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-28T18:54:01+08:00">
+                2017-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DSP/" itemprop="url" rel="index">
+                    <span itemprop="name">DSP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>基于DSP的人脸检测</strong></p>
+<hr>
+<h2 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h2><p>利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，了解人脸检测常用方法，掌握模板匹配算法实现人脸检测的基本原理，并在 DSP 实验板上实现一般环境图像中单个正面人脸的检测，并在实验板的 LCD 显示屏进行显示。</p>
+<h2 id="二、实现方案"><a href="#二、实现方案" class="headerlink" title="二、实现方案"></a>二、实现方案</h2><h3 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h3><p>本实验所探讨的是一般环境图像中单个正面端正人脸的检测问题。这种条件下的人脸检测的方法主要有模板匹配方法、可变形模板方法等。概括的说，基于模板匹配的方法是在图形灰度上直接比较目标模板和候选图像区域之间的相似性，而基于特征匹配的方法是比较从图像中抽取的一定特征的相似性。</p>
+<p>本实验主要用到两种模板：双眼模板和不同长宽比的模板。在检测时首先使用双眼模板进行粗筛选，然后使用不同长宽比的人脸模板确定出区域的位置和范围，接着通过确定出来的位置和匹配模板的相似度程度来确定是否是人脸。 </p>
+<a id="more"></a>
+<p>模板生成，我们在人脸检测中使用了6个模板：一个用于初筛选的双眼模板，五个用于检测不同长宽比的人脸模板。采用多个人脸模板是为了适应不同人脸部的不同长宽比。模板是通过对多个样本平均构造出来的。首先在选取的样本图像上用手工画出人脸的区域作为人脸样本。由于各个样本的尺度大小和灰度分布不同，因此首先对他们进行尺度和灰度标准化，然后将所用样本取灰度平均值并压缩到需要的尺度作为原始模板。拷贝原始模板的眼睛部分，进行灰度分布标准化后作为双眼模板，对原始模板分别按照1:0.9、1：1、1:1.、1：2、1:1.3的宽长比变形，进行灰度分布标准化后作为人脸模板。</p>
+<p>在模板生成中最主要的工作是图像的尺度变换和灰度分布标准化，尺度变换主要是基于线性插值的重采样方法。将图像看成一个二维矩阵 D[W][H]，其中 W 和 H 分别表示图像的宽和高。</p>
+<p>（1）图像的灰度值</p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B81.png" alt="1"></p>
+<p>（2）灰度分布的方差 </p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B82.png" alt="2"></p>
+<p>（3）灰度均衡化 </p>
+<p>对于输入的每个样本图像，为了将其灰度平均值和方差变换到事先设定的灰度平均值和方差，从而将样本中每个像素点的灰度值进行如下变换： </p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B83.png" alt="3"></p>
+<p>假设人脸模板的灰度矩阵为 T[M][N]，输入图像区域的灰度矩阵为 R[M][N]，灰度均值，那么他们之间的相关系数 r(T,R)和对应像素灰度值的平均偏差d(T,R)分别为： </p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B84.png" alt="4"></p>
+<p>r(T,R)越大表示模板与输入图像区域的匹配程度越高；而d（T,R）正相反。将他们综合起来作为匹配程度的度量： </p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E4%BA%BA%E8%84%B85.png" alt="5"></p>
+<p>其中权重系数我们取经验值35.0。</p>
+<h3 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h3><p>（1）初始化最大匹配度，设当前图像<br>（2）设当前扫描点（x,y）为图像起始点（0,0）<br>（3）检测扫描区域是否为双眼区，（即计算区域灰度均方值是否大于20）若不是则转（6）<br>（4）检测相应区域是否为人脸（即计算R与模板T的相关系数是否大于0.3），是则求出当前区域与人脸的匹配度D，否则转（6）<br>（5）若 D&gt;Dmax，记录当前区域的位置和大小，并令 Dmax=D<br>（6）若 x+24&lt;W，x=x+1，转（3）<br>（7）若 y+31&lt;H，x=0，y=y+1 转（3） </p>
+<h2 id="三、核心代码"><a href="#三、核心代码" class="headerlink" title="三、核心代码"></a>三、核心代码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********计算相关系数********/</span></span><br><span class="line"><span class="function"><span class="keyword">double</span>  <span class="title">funcR</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> test[],<span class="keyword">unsigned</span> <span class="keyword">char</span> tem[],<span class="keyword">int</span> len,<span class="keyword">int</span> pts,<span class="keyword">double</span> meanr,<span class="keyword">double</span> meant,<span class="keyword">double</span> varr,<span class="keyword">double</span> vart)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i=<span class="number">0</span>;<span class="keyword">double</span> r=<span class="number">0</span>;</span><br><span class="line">	pts=pts+<span class="number">16</span>;</span><br><span class="line">	<span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		r=r+<span class="built_in">pow</span>((tem[i]-meant)*(test[i+pts]-meanr),<span class="number">2</span>);		</span><br><span class="line">	&#125;</span><br><span class="line">	r=r/len/varr/vart;	</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**********计算匹配程度********/</span></span><br><span class="line"><span class="function"><span class="keyword">double</span>  <span class="title">funcD</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> test[],<span class="keyword">unsigned</span> <span class="keyword">char</span> tem[],<span class="keyword">int</span> len,<span class="keyword">int</span> pts,<span class="keyword">double</span> meanr,<span class="keyword">double</span> meant,<span class="keyword">double</span> varr,<span class="keyword">double</span> vart)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i=<span class="number">0</span>;<span class="keyword">double</span> a=<span class="number">35</span>;<span class="keyword">double</span> r=<span class="number">0</span>;<span class="keyword">double</span> d=<span class="number">0</span>;<span class="keyword">double</span> D=<span class="number">0</span>;</span><br><span class="line">	pts=pts+<span class="number">16</span>;</span><br><span class="line">	<span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		r=r+<span class="built_in">pow</span>((tem[i]-meant)*(test[i+pts]-meanr),<span class="number">2</span>);</span><br><span class="line">		d=d+(tem[i]-test[i+pts])*(tem[i]-test[i+pts]);</span><br><span class="line">	&#125;</span><br><span class="line">	r=r/len/varr/vart;</span><br><span class="line">	d=d/len;</span><br><span class="line">	D=r+a/(<span class="number">1</span>+d);</span><br><span class="line">	<span class="keyword">return</span> D;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/***************需要添加内容***************/</span></span><br><span class="line"><span class="comment">/*******计算均值和方差***********/</span> </span><br><span class="line"><span class="keyword">double</span> meanc=<span class="number">0</span>;<span class="keyword">double</span> varc=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">40</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meanc=meanc+image_c[i];</span><br><span class="line">&#125;</span><br><span class="line">meanc=meanc/<span class="number">68</span>/<span class="number">40</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">40</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	varc=varc+<span class="built_in">pow</span>(image_c[i]-meanc,<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line">varc=varc/<span class="number">68</span>/<span class="number">40</span>;</span><br><span class="line">	 	 </span><br><span class="line"><span class="keyword">double</span> meand=<span class="number">0</span>;<span class="keyword">double</span> vard=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">69</span>*<span class="number">37</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meand=meand+image_d[i];</span><br><span class="line">&#125;</span><br><span class="line">meand=meand/<span class="number">69</span>/<span class="number">37</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">69</span>*<span class="number">37</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	vard=vard+<span class="built_in">pow</span>(image_d[i]-meand,<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line">vard=vard/<span class="number">69</span>/<span class="number">37</span>;</span><br><span class="line">	 </span><br><span class="line"><span class="keyword">double</span> meane=<span class="number">0</span>;<span class="keyword">double</span> vare=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">38</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meane=meane+image_e[i];</span><br><span class="line">&#125;</span><br><span class="line">meane=meane/<span class="number">68</span>/<span class="number">38</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">38</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	vare=vare+<span class="built_in">pow</span>(image_e[i]-meane,<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line">vare=vare/<span class="number">68</span>/<span class="number">38</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> meaneye=<span class="number">0</span>;<span class="keyword">double</span> vareye=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">18</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meaneye=meaneye+image_eye[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">18</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meaneye=meaneye+image_eye[i];</span><br><span class="line">&#125;</span><br><span class="line">meaneye=meaneye/<span class="number">68</span>/<span class="number">18</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> meand=<span class="number">0</span>;<span class="keyword">double</span> vard=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">100</span>*<span class="number">100</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	meand=meand+image[i];</span><br><span class="line">&#125;</span><br><span class="line">meand=meand/<span class="number">100</span>/<span class="number">100</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">100</span>*<span class="number">100</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	elt_r=vard+<span class="built_in">pow</span>(image[i]-meand,<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line">vard=vard/<span class="number">100</span>/<span class="number">100</span>;</span><br><span class="line">	 </span><br><span class="line"><span class="comment">/***********灰度值均衡化************/</span></span><br><span class="line"><span class="keyword">double</span> sumc=<span class="number">0</span>,sume=<span class="number">0</span>,sumeyes=<span class="number">0</span>,sumdet=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">double</span> meanc=<span class="number">0</span>,meane=<span class="number">0</span>,meaneyes=<span class="number">0</span>,u0=<span class="number">110</span>,meandet=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">double</span> sc=<span class="number">0</span>,se=<span class="number">0</span>,seyes=<span class="number">0</span>,s0=<span class="number">60</span>,sdet=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">40</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	sumc=sumc+image_c[i];</span><br><span class="line">&#125;</span><br><span class="line">meanc=sumc/(<span class="number">68</span>*<span class="number">40</span>);</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">38</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	sume=sume+image_e[i];</span><br><span class="line">&#125;</span><br><span class="line">meane=sume/(<span class="number">68</span>*<span class="number">38</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">18</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	sumeyes=sumeyes+image_eyes[i];</span><br><span class="line">&#125;</span><br><span class="line">meaneyes=sumeyes/(<span class="number">68</span>*<span class="number">18</span>);</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">40</span>;i++)	</span><br><span class="line">&#123;</span><br><span class="line">	sc=sc+(image_c[i]-meanc)*(image_c[i]-meanc);</span><br><span class="line">&#125;</span><br><span class="line">	sc=<span class="built_in">sqrt</span>(sc/(<span class="number">68</span>*<span class="number">40</span>));                                                                                                                                                                                                                                                                                                                                                                                                                                              </span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">38</span>;i++)	</span><br><span class="line">&#123; </span><br><span class="line">	se=se+(image_e[i]-meane)*(image_e[i]-meane);</span><br><span class="line">&#125;</span><br><span class="line">	se=<span class="built_in">sqrt</span>(se/(<span class="number">68</span>*<span class="number">38</span>));</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">18</span>;i++)	</span><br><span class="line">&#123;			 </span><br><span class="line">	seyes=seyes+(image_eyes[i]-meaneyes)*(image_eyes[i]-meaneyes);</span><br><span class="line">&#125;</span><br><span class="line">	seyes=<span class="built_in">sqrt</span>(seyes/(<span class="number">68</span>*<span class="number">18</span>));</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">40</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	image_c[i]=(s0/sc)*(image_c[i]-meanc)+u0;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">38</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	image_e[i]=(s0/se)*(image_e[i]-meane)+u0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">68</span>*<span class="number">18</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	image_eyes[i]=(s0/seyes)*(image_eyes[i]-meaneyes)+u0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">100</span>*<span class="number">100</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	sumdet=sumdet+image[i];</span><br><span class="line">&#125;</span><br><span class="line">meandet=sumdet/(<span class="number">100</span>*<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">100</span>*<span class="number">100</span>;i++)	</span><br><span class="line">&#123;				 </span><br><span class="line">	sdet=sdet+<span class="built_in">pow</span>(image[i]-meandet,<span class="number">2</span>);	</span><br><span class="line">&#125;</span><br><span class="line">	sdet=<span class="built_in">sqrt</span>(sdet/(<span class="number">100</span>*<span class="number">100</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">/**************人眼检测****************	 </span></span><br><span class="line"><span class="comment">/**************人眼检测*******************/</span></span><br><span class="line"><span class="keyword">double</span> Dmax=<span class="number">0</span>,r=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> k=<span class="number">0</span>,ms=<span class="number">0</span>,t=<span class="number">0</span>,x=<span class="number">0</span>,y=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> local[<span class="number">3</span>][<span class="number">2</span>];</span><br><span class="line"><span class="keyword">double</span> D[<span class="number">3</span>];</span><br><span class="line">D[<span class="number">0</span>]=<span class="number">-100</span>,D[<span class="number">1</span>]=<span class="number">-100</span>,D[<span class="number">2</span>]=<span class="number">-100</span>;</span><br><span class="line"><span class="keyword">double</span> Dmat[<span class="number">6</span>];</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">100</span>;j++)</span><br><span class="line">	&#123;</span><br><span class="line">		detect[i][j]=image[k];</span><br><span class="line">		k++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">100</span><span class="number">-18</span>;j++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">100</span><span class="number">-68</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			ms=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(t=<span class="number">0</span>;t&lt;<span class="number">18</span>;t++)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">for</span>(k=<span class="number">0</span>;k&lt;<span class="number">68</span>;k++)	</span><br><span class="line">				&#123;	</span><br><span class="line">					ms=ms+detect[j+t][i+k]*detect[j+t][i+k];</span><br><span class="line">				&#125;</span><br><span class="line">		     &#125;	</span><br><span class="line">		ms=ms/(<span class="number">68</span>*<span class="number">18</span>);</span><br><span class="line">		<span class="keyword">if</span>(ms&gt;<span class="number">20</span>)</span><br><span class="line">		&#123;</span><br><span class="line">		  x=j;</span><br><span class="line">		  y=i;</span><br><span class="line">		  r=funcR(image,meandet,sdet,image_eyes,u0,s0,<span class="number">18</span>,<span class="number">68</span>,x,y);</span><br><span class="line">		  <span class="keyword">if</span>(r&gt;<span class="number">0.3</span>)</span><br><span class="line">		  &#123;</span><br><span class="line">		  	Dmax=funcD(image,meandet,sdet,image_eyes,u0,s0,<span class="number">18</span>,<span class="number">68</span>,x,y);</span><br><span class="line">		  	<span class="keyword">if</span> (Dmax&gt;D[<span class="number">0</span>])</span><br><span class="line">		  	&#123;</span><br><span class="line">		  		D[<span class="number">2</span>]=D[<span class="number">1</span>];</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">0</span>]=local[<span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">1</span>]=local[<span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">		  		D[<span class="number">1</span>]=D[<span class="number">0</span>];</span><br><span class="line">		  		local[<span class="number">1</span>][<span class="number">0</span>]=local[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">		  		local[<span class="number">1</span>][<span class="number">1</span>]=local[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">		  		D[<span class="number">0</span>]=Dmax;</span><br><span class="line">		  		local[<span class="number">0</span>][<span class="number">0</span>]=x;</span><br><span class="line">		  		local[<span class="number">0</span>][<span class="number">1</span>]=y;</span><br><span class="line">		  	&#125;</span><br><span class="line">		  	<span class="keyword">else</span> <span class="keyword">if</span>(Dmax&gt;D[<span class="number">1</span>])</span><br><span class="line">		  	&#123;</span><br><span class="line">		  		D[<span class="number">2</span>]=D[<span class="number">1</span>];</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">0</span>]=local[<span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">1</span>]=local[<span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">		  		D[<span class="number">1</span>]=Dmax;</span><br><span class="line">		  		local[<span class="number">1</span>][<span class="number">0</span>]=x;</span><br><span class="line">		  		local[<span class="number">1</span>][<span class="number">1</span>]=y;</span><br><span class="line">		  	&#125;</span><br><span class="line">		  	<span class="keyword">else</span> <span class="keyword">if</span>(Dmax&gt;D[<span class="number">2</span>])</span><br><span class="line">		  	&#123;</span><br><span class="line">		  		D[<span class="number">2</span>]=Dmax;</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">0</span>]=x;</span><br><span class="line">		  		local[<span class="number">2</span>][<span class="number">1</span>]=y;</span><br><span class="line">		  	&#125;</span><br><span class="line">		  &#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/***************人脸匹配******************/</span></span><br><span class="line">	</span><br><span class="line">Dmat[<span class="number">0</span>]=funcD(image,meandet,sdet,image_c,u0,s0,<span class="number">40</span>,<span class="number">68</span>,local[<span class="number">0</span>][<span class="number">0</span>],local[<span class="number">0</span>][<span class="number">1</span>]);</span><br><span class="line">Dmat[<span class="number">1</span>]=funcD(image,meandet,sdet,image_c,u0,s0,<span class="number">40</span>,<span class="number">68</span>,local[<span class="number">1</span>][<span class="number">0</span>],local[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">Dmat[<span class="number">2</span>]=funcD(image,meandet,sdet,image_c,u0,s0,<span class="number">40</span>,<span class="number">68</span>,local[<span class="number">2</span>][<span class="number">0</span>],local[<span class="number">2</span>][<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">Dmat[<span class="number">3</span>]=funcD(image,meandet,sdet,image_e,u0,s0,<span class="number">38</span>,<span class="number">68</span>,local[<span class="number">0</span>][<span class="number">0</span>],local[<span class="number">0</span>][<span class="number">1</span>]);</span><br><span class="line">Dmat[<span class="number">4</span>]=funcD(image,meandet,sdet,image_e,u0,s0,<span class="number">38</span>,<span class="number">68</span>,local[<span class="number">1</span>][<span class="number">0</span>],local[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">Dmat[<span class="number">5</span>]=funcD(image,meandet,sdet,image_e,u0,s0,<span class="number">38</span>,<span class="number">68</span>,local[<span class="number">2</span>][<span class="number">0</span>],local[<span class="number">2</span>][<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> temp=Dmat[<span class="number">0</span>],l,p;	</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(temp&lt;Dmat[i])</span><br><span class="line">			temp=Dmat[i];</span><br><span class="line">			l=i/<span class="number">3</span>;</span><br><span class="line">			p=i%<span class="number">3</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	x=local[p][<span class="number">0</span>];</span><br><span class="line">	y=local[p][<span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> x_end=<span class="number">0</span>,y_end=<span class="number">0</span>;	</span><br><span class="line"></span><br><span class="line"><span class="comment">/***************画出人脸大致范围****************/</span>	</span><br><span class="line"><span class="keyword">if</span>(l=<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		x_end=y+<span class="number">68</span>;</span><br><span class="line">		y_end=x+<span class="number">40</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">if</span>(l=<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		x_end=y+<span class="number">68</span>;</span><br><span class="line">		y_end=x+<span class="number">38</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">for</span>(i=y;i&lt;x_end;i++)</span><br><span class="line">&#123;</span><br><span class="line">	image[i+x*Kuan]=<span class="number">0</span>;</span><br><span class="line">	image[i+y_end*Kuan]=<span class="number">0</span>;         </span><br><span class="line">&#125;	</span><br><span class="line"><span class="keyword">for</span>(j=x;j&lt;y_end;j++)</span><br><span class="line">&#123;</span><br><span class="line">	image[y+j*Chang]=<span class="number">0</span>;</span><br><span class="line">	image[x_end+j*Chang]=<span class="number">0</span>;         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+            <a href="/tags/DSP/" rel="tag"># DSP</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/27/人工智能智能系统指南笔记（一）/" rel="next" title="人工智能智能系统指南笔记（一）">
+                <i class="fa fa-chevron-left"></i> 人工智能智能系统指南笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/28/DBSCAN聚类/" rel="prev" title="DBSCAN聚类">
+                DBSCAN聚类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZHOU Ziyue" />
+          <p class="site-author-name" itemprop="name">ZHOU Ziyue</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/YOYOE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/YOYOEzzy" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、目标"><span class="nav-number">1.</span> <span class="nav-text">一、目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、实现方案"><span class="nav-number">2.</span> <span class="nav-text">二、实现方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验原理"><span class="nav-number">2.1.</span> <span class="nav-text">实验原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验步骤"><span class="nav-number">2.2.</span> <span class="nav-text">实验步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、核心代码"><span class="nav-number">3.</span> <span class="nav-text">三、核心代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZHOU Ziyue</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

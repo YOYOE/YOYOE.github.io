@@ -1,0 +1,785 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据挖掘,c,博弈论," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="纳什均衡中的网络节点极小覆盖问题  一、目标当雪堆博弈满足r&amp;lt;1/kmax时，网络博弈的纳什均衡中的采用合作策略的节点构成极小节点覆盖。编程验证该结论，网络自定，节点数目不少于10。  二、原理分析1、雪堆博弈“雪堆”博弈模型是一种两人对称博弈模型。 在一个风雪交加的夜晚,两人相向而来,被一个雪堆所阻,假设铲除这个雪堆使道路通畅需要的代价为c,如果道路通畅则带给每个人的好处量化为b。如果两人">
+<meta name="keywords" content="数据挖掘,c,博弈论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纳什均衡中的网络节点极小覆盖问题">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/纳什均衡中的网络节点极小覆盖问题/index.html">
+<meta property="og:site_name" content="YOYOE">
+<meta property="og:description" content="纳什均衡中的网络节点极小覆盖问题  一、目标当雪堆博弈满足r&amp;lt;1/kmax时，网络博弈的纳什均衡中的采用合作策略的节点构成极小节点覆盖。编程验证该结论，网络自定，节点数目不少于10。  二、原理分析1、雪堆博弈“雪堆”博弈模型是一种两人对称博弈模型。 在一个风雪交加的夜晚,两人相向而来,被一个雪堆所阻,假设铲除这个雪堆使道路通畅需要的代价为c,如果道路通畅则带给每个人的好处量化为b。如果两人">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A11.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A12.png">
+<meta property="og:updated_time" content="2017-04-29T04:40:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="纳什均衡中的网络节点极小覆盖问题">
+<meta name="twitter:description" content="纳什均衡中的网络节点极小覆盖问题  一、目标当雪堆博弈满足r&amp;lt;1/kmax时，网络博弈的纳什均衡中的采用合作策略的节点构成极小节点覆盖。编程验证该结论，网络自定，节点数目不少于10。  二、原理分析1、雪堆博弈“雪堆”博弈模型是一种两人对称博弈模型。 在一个风雪交加的夜晚,两人相向而来,被一个雪堆所阻,假设铲除这个雪堆使道路通畅需要的代价为c,如果道路通畅则带给每个人的好处量化为b。如果两人">
+<meta name="twitter:image" content="http://op2gp4y85.bkt.clouddn.com/%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A11.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/29/纳什均衡中的网络节点极小覆盖问题/"/>
+
+
+
+
+
+  <title>纳什均衡中的网络节点极小覆盖问题 | YOYOE</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YOYOE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">It fills you with determination.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/纳什均衡中的网络节点极小覆盖问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZHOU Ziyue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YOYOE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                纳什均衡中的网络节点极小覆盖问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T11:33:29+08:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据挖掘/" itemprop="url" rel="index">
+                    <span itemprop="name">数据挖掘</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>纳什均衡中的网络节点极小覆盖问题</strong></p>
+<hr>
+<h2 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h2><p>当雪堆博弈满足r&lt;1/kmax时，网络博弈的纳什均衡中的采用合作策略的节点构成极小节点覆盖。编程验证该结论，网络自定，节点数目不少于10。 </p>
+<h2 id="二、原理分析"><a href="#二、原理分析" class="headerlink" title="二、原理分析"></a>二、原理分析</h2><h3 id="1、雪堆博弈"><a href="#1、雪堆博弈" class="headerlink" title="1、雪堆博弈"></a>1、雪堆博弈</h3><p>“雪堆”博弈模型是一种两人对称博弈模型。</p>
+<p>在一个风雪交加的夜晚,两人相向而来,被一个雪堆所阻,假设铲除这个雪堆使道路通畅需要的代价为c,如果道路通畅则带给每个人的好处量化为b。如果两人一齐动手铲雪,则他们的收益为R=b-c/2;如果只有一人铲雪,虽然两个人都可以回家,但是背叛者逃避了劳动,它的收益为T=b,而合作者的收益为S=b-c;如果两人都选择不合作,两人都被雪堆挡住而无法回家,他们的收益都为P=0。这里假设收益参数满足下面的条件:T&gt;R&gt;S&gt;P。</p>
+<h3 id="2、纳什均衡"><a href="#2、纳什均衡" class="headerlink" title="2、纳什均衡"></a>2、纳什均衡</h3><p>纳什均衡是一种策略组合，使得同一时间内每个参与人的策略是对其他参与人策略的最优反应。</p>
+<p>假设有n人参与博弈，如果某种情况下无一参与者可以独自行动而增加收益（即为了自身利益的最大化，没有任何单独的一方愿意改变其策略），则此策略组合被称为纳什均衡。所有局中人策略构成一个策略组合。<br>纳什均衡，从实质上说，是一种非合作博弈状态</p>
+<a id="more"></a>
+<h3 id="3、网络节点极小覆盖问题"><a href="#3、网络节点极小覆盖问题" class="headerlink" title="3、网络节点极小覆盖问题"></a>3、网络节点极小覆盖问题</h3><p>网络节点极小覆盖问题是一个著名组合优化问题，其目的在于找出给定网络的最小节点集合以覆盖所有的边。  </p>
+<p>极小节点覆盖：节点集合中去掉任何一个点，就不能覆盖网络所有边。  </p>
+<p>最小节点覆盖：极小节点覆盖中节点数目最少的。</p>
+<h2 id="三、解题思路"><a href="#三、解题思路" class="headerlink" title="三、解题思路"></a>三、解题思路</h2><h3 id="1、定义无向网络"><a href="#1、定义无向网络" class="headerlink" title="1、定义无向网络"></a>1、定义无向网络</h3><p>定义一个如图所示的无向网络图，其中绿色代表合作，红色代表背叛。</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A11.png" alt="纳什均衡1"></p>
+<p>该无向图的矩阵为：<br>0,1,1,0,0,0,0,0,0,0;<br>1,0,0,1,0,0,0,0,0,0;<br>1,0,0,1,0,0,0,0,0,0;<br>0,1,1,0,0,1,1,0,0,0;<br>0,0,0,1,0,0,1,0,0,0;<br>0,0,0,1,0,0,1,0,0,0;<br>0,0,0,0,1,1,0,1,1,0;<br>0,0,0,0,0,0,1,0,0,1;<br>0,0,0,0,0,0,1,0,0,1;<br>0,0,0,0,0,0,0,1,1,0;</p>
+<p>图中k max为4，则取r&lt;1/k max=0.25，r=0.2。</p>
+<p>矩阵status为：0.2,0.2,0.2,0.2,0.8,0.8,0.2,0.2,0.8,0.2</p>
+<h3 id="2、分析纳什均衡"><a href="#2、分析纳什均衡" class="headerlink" title="2、分析纳什均衡"></a>2、分析纳什均衡</h3><p>设当前节点为k[i]，与之相连的节点为k[j]。</p>
+<p>如果k[i]为合作策略，则status[i]=0.2，读取k[j]。如status[j]=0.2，则k[i]、k[j]均采取合作策略，收益为1。如status[j]=0.8，则k[i]采取合作策略，k[j]采取背叛策略，收益为1-status[i]。最后计算得到共同收益IncomeA。</p>
+<p>如果k[i]为背叛策略，则status[i]=0.8，读取k[j]。如status[j]=0.2，则k[i]采取背叛策略，k[j]采取合作策略，收益为1+status[i]。如status[j]=0.8，k[i]、k[j]均采取合作策略，收益为0。最后计算得到共同收益IncomeB。</p>
+<p>将IncomeA和IncomeB进行比较。如果IncomeA&gt;=IncomeB，则在当前节点k[i]采取合作策略。如果IncomeA&lt;IncomeB，则在当前节点k[i]采取背叛策略。</p>
+<h3 id="3、改变初始状态"><a href="#3、改变初始状态" class="headerlink" title="3、改变初始状态"></a>3、改变初始状态</h3><p>更改初始状态，并在不同的初始状态下分析纳什均衡，得到节点状态，直至得到最小节点覆盖。</p>
+<h2 id="四、数据处理"><a href="#四、数据处理" class="headerlink" title="四、数据处理"></a>四、数据处理</h2><p>Status= 0.2000    0.8000    0.8000    0.2000    0.8000    0.8000    0.2000    0.8000    0.8000    0.2000 </p>
+<p>由Status可知，当达到纳什均衡时，第1、4、7、10号节点采取合作策略，第2、3、5、6、8、9号节点采取背叛策略。无论删掉2、3、5、6、8、9号节点中的哪个节点，都不能覆盖网络图中的所有边，即构成了极小节点覆盖。</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A12.png" alt="纳什均衡2"></p>
+<p>由此可证，当雪堆博弈满足r&lt;1/kmax时，网络博弈的纳什均衡中的采用合作策略的节点构成极小节点覆盖。 </p>
+<h2 id="五、核心代码"><a href="#五、核心代码" class="headerlink" title="五、核心代码"></a>五、核心代码</h2><h3 id="1、初始值定义"><a href="#1、初始值定义" class="headerlink" title="1、初始值定义"></a>1、初始值定义</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">network=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>;</span><br><span class="line"><span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>;];                  </span><br><span class="line"></span><br><span class="line">status=[<span class="number">0.2</span>,<span class="number">0.2</span>,<span class="number">0.2</span>,<span class="number">0.2</span>,<span class="number">0.8</span>,<span class="number">0.8</span>,<span class="number">0.2</span>,<span class="number">0.2</span>,<span class="number">0.8</span>,<span class="number">0.2</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="2、主程序"><a href="#2、主程序" class="headerlink" title="2、主程序"></a>2、主程序</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i=<span class="number">1</span>:<span class="number">10</span>             </span><br><span class="line">	status(<span class="number">1</span>,i)=<span class="number">0.2</span>;            </span><br><span class="line">    income=<span class="number">0</span>;        </span><br><span class="line">    IncomeA=<span class="number">0</span>;             </span><br><span class="line">    <span class="keyword">for</span> j=<span class="number">1</span>:<span class="number">10</span>                </span><br><span class="line">    	<span class="keyword">if</span> net(i,j)==<span class="number">1</span>                               </span><br><span class="line">    		<span class="keyword">if</span> status(<span class="number">1</span>,j)==<span class="number">0.2</span>                               </span><br><span class="line">    			income=<span class="number">1</span>;                     </span><br><span class="line">      	    <span class="function">elseif <span class="title">status</span><span class="params">(<span class="number">1</span>,j)</span></span>==<span class="number">0.8</span>   </span><br><span class="line">      	        income=<span class="number">1</span>-status(<span class="number">1</span>,i);                     </span><br><span class="line">      	    end                     </span><br><span class="line">      	    IncomeA=IncomeA+income;                </span><br><span class="line">      	end             </span><br><span class="line">    end      </span><br><span class="line">    status(<span class="number">1</span>,i)=<span class="number">0.8</span>;       </span><br><span class="line">    income=<span class="number">0</span>;         </span><br><span class="line">    IncomeB=<span class="number">0</span>;             </span><br><span class="line">    <span class="keyword">for</span> j=<span class="number">1</span>:<span class="number">10</span>                 </span><br><span class="line">    	<span class="keyword">if</span> net(i,j)==<span class="number">1</span>                            </span><br><span class="line">    		<span class="keyword">if</span> status(<span class="number">1</span>,j)==<span class="number">0.2</span>                              </span><br><span class="line">    			income=<span class="number">1</span>+status(<span class="number">1</span>,j);                      </span><br><span class="line">    		<span class="function">elseif <span class="title">status</span><span class="params">(<span class="number">1</span>,j)</span></span>==<span class="number">0.8</span>                         </span><br><span class="line">    		    income=<span class="number">0</span>;                     </span><br><span class="line">    		end                      </span><br><span class="line">    		IncomeB=IncomeB+income;                 </span><br><span class="line">    	end             </span><br><span class="line">    end              </span><br><span class="line"><span class="keyword">if</span> IncomeA&gt;=IncomeB                      </span><br><span class="line">	  status(<span class="number">1</span>,i)=<span class="number">0.2</span>;         </span><br><span class="line"><span class="keyword">else</span>             </span><br><span class="line">	  status(<span class="number">1</span>,i)=<span class="number">0.8</span>;         </span><br><span class="line">end     </span><br><span class="line">end </span><br><span class="line">disp(status)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据挖掘/" rel="tag"># 数据挖掘</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+            <a href="/tags/博弈论/" rel="tag"># 博弈论</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/基于emu8086的排序、数值转换及成绩汇总/" rel="next" title="基于emu8086的排序、数值转换及成绩汇总">
+                <i class="fa fa-chevron-left"></i> 基于emu8086的排序、数值转换及成绩汇总
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/文献翻译-一/" rel="prev" title="文献翻译(一)">
+                文献翻译(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZHOU Ziyue" />
+          <p class="site-author-name" itemprop="name">ZHOU Ziyue</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/YOYOE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/YOYOEzzy" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、目标"><span class="nav-number">1.</span> <span class="nav-text">一、目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、原理分析"><span class="nav-number">2.</span> <span class="nav-text">二、原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、雪堆博弈"><span class="nav-number">2.1.</span> <span class="nav-text">1、雪堆博弈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、纳什均衡"><span class="nav-number">2.2.</span> <span class="nav-text">2、纳什均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、网络节点极小覆盖问题"><span class="nav-number">2.3.</span> <span class="nav-text">3、网络节点极小覆盖问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、解题思路"><span class="nav-number">3.</span> <span class="nav-text">三、解题思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、定义无向网络"><span class="nav-number">3.1.</span> <span class="nav-text">1、定义无向网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、分析纳什均衡"><span class="nav-number">3.2.</span> <span class="nav-text">2、分析纳什均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、改变初始状态"><span class="nav-number">3.3.</span> <span class="nav-text">3、改变初始状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、数据处理"><span class="nav-number">4.</span> <span class="nav-text">四、数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、核心代码"><span class="nav-number">5.</span> <span class="nav-text">五、核心代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、初始值定义"><span class="nav-number">5.1.</span> <span class="nav-text">1、初始值定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、主程序"><span class="nav-number">5.2.</span> <span class="nav-text">2、主程序</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZHOU Ziyue</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

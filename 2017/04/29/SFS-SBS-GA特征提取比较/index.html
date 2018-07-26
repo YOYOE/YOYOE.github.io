@@ -1,0 +1,799 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="模式识别,matlab," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="基于MATLAB的顺序前进、顺序后退及遗传算法特征提取比较  一、概念特征提取要在低维空间中更好的分类，变换的有效性最好用错误概率来衡量，然而其计算复杂。从计算观点看，用其中的一些判据进行特征提取往往是唯一可行的方法。  特征提取方法包括按欧氏距离度量、按概率距离判据、基于判别熵最小化等方法。   特征选择特征选择即对原有特征进行删选优化，从原始特种中挑选出一些最有代表性、分类性能最好的特征进行分">
+<meta name="keywords" content="模式识别,matlab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SFS.SBS.GA特征提取比较">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/SFS-SBS-GA特征提取比较/index.html">
+<meta property="og:site_name" content="YOYOE">
+<meta property="og:description" content="基于MATLAB的顺序前进、顺序后退及遗传算法特征提取比较  一、概念特征提取要在低维空间中更好的分类，变换的有效性最好用错误概率来衡量，然而其计算复杂。从计算观点看，用其中的一些判据进行特征提取往往是唯一可行的方法。  特征提取方法包括按欧氏距离度量、按概率距离判据、基于判别熵最小化等方法。   特征选择特征选择即对原有特征进行删选优化，从原始特种中挑选出一些最有代表性、分类性能最好的特征进行分">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/ga1.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/ga2.png">
+<meta property="og:updated_time" content="2017-04-29T10:02:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SFS.SBS.GA特征提取比较">
+<meta name="twitter:description" content="基于MATLAB的顺序前进、顺序后退及遗传算法特征提取比较  一、概念特征提取要在低维空间中更好的分类，变换的有效性最好用错误概率来衡量，然而其计算复杂。从计算观点看，用其中的一些判据进行特征提取往往是唯一可行的方法。  特征提取方法包括按欧氏距离度量、按概率距离判据、基于判别熵最小化等方法。   特征选择特征选择即对原有特征进行删选优化，从原始特种中挑选出一些最有代表性、分类性能最好的特征进行分">
+<meta name="twitter:image" content="http://op2gp4y85.bkt.clouddn.com/ga1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/29/SFS-SBS-GA特征提取比较/"/>
+
+
+
+
+
+  <title>SFS.SBS.GA特征提取比较 | YOYOE</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YOYOE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">It fills you with determination.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/SFS-SBS-GA特征提取比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZHOU Ziyue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YOYOE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SFS.SBS.GA特征提取比较
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T17:39:15+08:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/模式识别/" itemprop="url" rel="index">
+                    <span itemprop="name">模式识别</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>基于MATLAB的顺序前进、顺序后退及遗传算法特征提取比较</strong></p>
+<hr>
+<h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><h3 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h3><p>要在低维空间中更好的分类，变换的有效性最好用错误概率来衡量，然而其计算复杂。从计算观点看，用其中的一些判据进行特征提取往往是唯一可行的方法。 </p>
+<p>特征提取方法包括按欧氏距离度量、按概率距离判据、基于判别熵最小化等方法。  </p>
+<h3 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h3><p>特征选择即对原有特征进行删选优化，从原始特种中挑选出一些最有代表性、分类性能最好的特征进行分类。 </p>
+<p>需要解决的问题：选择的标准、快速寻优算法。 </p>
+<p>经典特征选择算法：<br>  1）分支定界法：最优搜索<br>  2）次优搜索：单独最优特征组合法、顺序前进法、顺序后退法<br>  3）其他：模拟退火法、Tabu 搜索法、遗传算法 </p>
+<a id="more"></a>
+<h3 id="顺序前进法"><a href="#顺序前进法" class="headerlink" title="顺序前进法"></a>顺序前进法</h3><p>顺序前进法是自下而上的搜索方法。 </p>
+<p>每次从未入选的特征中选择一个特征，使得它与已入选的特征组合在一起时所得的可分性或分类识别率为最大，直至特征数增加到d为止。该方法考虑了所选特征与已入选特征之间的相关性。比单独最优特征组合效果好。   </p>
+<p>缺点：一旦某特征已入选，即使由于后加入的特 征使它变为多于也无法再把它剔除。 </p>
+<h3 id="顺序后退法"><a href="#顺序后退法" class="headerlink" title="顺序后退法"></a>顺序后退法</h3><p>顺序后退法是自上而下的搜索方法。 该方法根据特征子集的分类表现来选择特征。   </p>
+<p>搜索特征子集：从全体特征开始，每次剔除一个特征，使得所保留的特征集合有最大的可分性或分类识别率。依次迭代，直至可分性或识别率开始下降为止。   </p>
+<p>和顺序前进法比较，顺序后退法有两个特点：计算过程中可以估计每此去掉一个特征所造可分性的降低；由于顺序后退法的计算是在高位空间进行的，所以计算量比顺序前进法要大。 </p>
+<h3 id="遗传算法"><a href="#遗传算法" class="headerlink" title="遗传算法"></a>遗传算法</h3><p>从生物进化论得到启迪。遗传，变异，自然选择。基于该思想发展了遗传优化算法。   </p>
+<p>基因链码：待解问题的解的编码，每个基因链码也称为一个个体。对于特征选择，可用一个 D 位的 0/1 构成的串表示一种特征组合。   </p>
+<p>群体：若干个个体的集合，即问题的一些解的集合。   </p>
+<p>交叉：由当前两个个体的链码交叉产生新一代的两个个体。   </p>
+<p>变异：由一个链码随机选取某基因使其翻转。 </p>
+<p>适应度：每个个体xi的函数值fi，个体xi越好，适应度fi越大。新一代群体对环境的平均适应度比父代高。 <br>遗传算法的基本框架： <br>Step1: 令进化代数t=0。 <br>Step2: 给出初始化群体P(t)，令xg为任一个体。 <br>Step3: 对P(t)中每个个体估值，并将群体中最优解x’与xg比较，如果x’的性能优于 xg，则xg=x’。 <br>Step4: 如果终止条件满足，则算法结束，xg为算法的结果。否则继续。<br>Step5: 从P(t)中选择个体并进行交叉和变异操作，得到新一代群体P(t+1)。令t=t+1,转到Step3。 </p>
+<h2 id="二、分析"><a href="#二、分析" class="headerlink" title="二、分析"></a>二、分析</h2><h3 id="SFS、SBS"><a href="#SFS、SBS" class="headerlink" title="SFS、SBS"></a>SFS、SBS</h3><p>在顺序前进、顺序后退的特征提取中，先确定主函数。首先设定特征提取数为30，然后分别引用SFS、SBS函数进行特征提取，再用k近邻计算k值不同时的准确率，画出Figure1，进行比较。然后根据图像得出k=2 时特征提取准确率相对最高，所以令k=2，根据特征提取数的不同画出Figure2。在SFS函数中，先计算各分类中样本个数，然后将未提取特征数按种类分为两部分。逐个从未提取特征中抽取特征，通过separability函数计算可分性，将可分性最高的特征划入已抽取特征范围内。</p>
+<p>SBS函数大体同上，将所有数据划入已抽取特征范围内，然后逐个抽取特征加入未提取特征。在separability函数中，可分性判定采用基于距离的方式——分别计算样本的类内离散度和类间离散度，进行trace操作。 </p>
+<h3 id="遗传算法-1"><a href="#遗传算法-1" class="headerlink" title="遗传算法"></a>遗传算法</h3><p>在遗传算法主程序中，首先确定种群内染色体数、变异概率、交叉概率、迭代次数，然后引入genetic进行遗传处理。设定总共处理一百次，取其中的最大值输出。 </p>
+<p>在核心程序genetic中，先随机生成亲代，然后依次进行计算适应度、轮盘赌、交叉、变异操作，最后找到适应度最大的染色体选择的特征节点，最后用最近临法计算正确率。 </p>
+<p>在轮盘赌选择法中，如果适应度为0，则随机选择；如果适应度不为0，则只保留适应度不为1的个体。此外，引入精英选择，将最优质的染色体直接引入下一代。 </p>
+<p>计算适应度通过计算可分性达到。交叉是以所选节点为中心，将两个染色体进行调换。变异通过将染色体与1异或得到。 </p>
+<h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3><p>Sonar：共有 208 个样本，特征数为 60，样本分为 97 和 111 两类。</p>
+<h2 id="三、核心代码"><a href="#三、核心代码" class="headerlink" title="三、核心代码"></a>三、核心代码</h2><h3 id="SFS、SBS-1"><a href="#SFS、SBS-1" class="headerlink" title="SFS、SBS"></a>SFS、SBS</h3><h4 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">clc</span><br><span class="line">load sonar;</span><br><span class="line">[am,an]=<span class="built_in">size</span>(sonar);</span><br><span class="line">c=<span class="number">2</span>;</span><br><span class="line">r1=<span class="number">30</span>;</span><br><span class="line">r2=<span class="number">30</span>;</span><br><span class="line">sf=SFS(sonar,c,r1);</span><br><span class="line">sb=SBS(sonar,c,r2);</span><br><span class="line">cf=knn(<span class="number">19</span>,sf,<span class="number">13</span>,<span class="number">16</span>);</span><br><span class="line">cb=knn(<span class="number">19</span>,sb,<span class="number">13</span>,<span class="number">16</span>);</span><br><span class="line">x1=[<span class="number">1</span>:<span class="number">2</span>:<span class="number">19</span>];</span><br><span class="line">figure(<span class="number">1</span>)</span><br><span class="line">hold on;</span><br><span class="line">plot(x1,cf,<span class="string">'b'</span>);</span><br><span class="line">plot(x1,cb,<span class="string">'r'</span>);</span><br><span class="line">plot(x1,cf,<span class="string">'o'</span>);</span><br><span class="line">plot(x1,cb,<span class="string">'x'</span>);</span><br><span class="line">grid on;</span><br><span class="line">correctf=[];</span><br><span class="line">correctb=[];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:an<span class="number">-1</span></span><br><span class="line">    samplef=SFS(sonar,c,<span class="built_in">i</span>);</span><br><span class="line">    sampleb=SBS(sonar,c,(an<span class="number">-1</span>-<span class="built_in">i</span>));</span><br><span class="line">    correctf=[correctf,knn(<span class="number">2</span>,sf,<span class="number">13</span>,<span class="number">16</span>)];</span><br><span class="line">    correctb=[correctb,knn(<span class="number">2</span>,sb,<span class="number">13</span>,<span class="number">16</span>)];</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">x2=[<span class="number">1</span>:an<span class="number">-1</span>];</span><br><span class="line">figure(<span class="number">2</span>)</span><br><span class="line">hold on;</span><br><span class="line">plot(x2,correctf,<span class="string">'b'</span>);</span><br><span class="line">plot(x2,correctb,<span class="string">'r'</span>);</span><br><span class="line">plot(x2,correctf,<span class="string">'o'</span>);</span><br><span class="line">plot(x2,correctb,<span class="string">'x'</span>);</span><br><span class="line">grid on</span><br></pre></td></tr></table></figure>
+<h4 id="SFS"><a href="#SFS" class="headerlink" title="SFS"></a>SFS</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[choosen]</span>=<span class="title">SFS</span><span class="params">(data,c,r)</span></span></span><br><span class="line">[am,an]=<span class="built_in">size</span>(data);</span><br><span class="line">data=sortrows(data,an);</span><br><span class="line">data(am+<span class="number">1</span>,<span class="number">1</span>:an<span class="number">-1</span>)=[<span class="number">1</span>:an<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:c</span><br><span class="line">    dd=<span class="built_in">find</span>(data(:,an)==<span class="built_in">i</span>); </span><br><span class="line">    ai(<span class="built_in">i</span>)=<span class="built_in">length</span>(dd); </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">clear <span class="built_in">i</span></span><br><span class="line">x1=data(<span class="number">1</span>:ai(<span class="number">1</span>),:);</span><br><span class="line">x2=data(ai(<span class="number">1</span>)+<span class="number">1</span>:am,:);</span><br><span class="line">choosen=<span class="built_in">zeros</span>(am,r); </span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:r</span><br><span class="line">    p=<span class="built_in">size</span>(x1,<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:p<span class="number">-1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">i</span>==<span class="number">1</span></span><br><span class="line">            J(<span class="number">1</span>,<span class="built_in">j</span>)=separability(x1(:,<span class="built_in">j</span>),x2(<span class="number">1</span>:ai(<span class="number">2</span>),<span class="built_in">j</span>));</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            J(<span class="number">1</span>,<span class="built_in">j</span>)=separability([choosen(<span class="number">1</span>:ai(<span class="number">1</span>),:),x1(:,j)],[choosen(ai(<span class="number">1</span>)+<span class="number">1</span>:am,:),x2(<span class="number">1</span>:ai(<span class="number">2</span>),j)]);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        J(<span class="number">2</span>,<span class="built_in">j</span>)=x2(ai(<span class="number">2</span>)+<span class="number">1</span>,<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    J=sortrows(J',<span class="number">1</span>);</span><br><span class="line">    e(<span class="built_in">i</span>,:)=J(p<span class="number">-1</span>,:);</span><br><span class="line">    [row,col]==e(<span class="built_in">i</span>,<span class="number">2</span>);</span><br><span class="line">    choosen(:,<span class="built_in">i</span>)=[x1(:,col);x2(:,col)];</span><br><span class="line">    x1(:,col)=[];</span><br><span class="line">    x2(:,col)=[];</span><br><span class="line">    clear J</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">choosen(:,r+<span class="number">1</span>)=data(<span class="number">1</span>:am,an);</span><br></pre></td></tr></table></figure>
+<h4 id="SBS"><a href="#SBS" class="headerlink" title="SBS"></a>SBS</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[choosen]</span>=<span class="title">SBS</span><span class="params">(data,c,r)</span></span></span><br><span class="line">[am,an]=<span class="built_in">size</span>(data);</span><br><span class="line">data=sortrows(data,an);</span><br><span class="line">data(am+<span class="number">1</span>,<span class="number">1</span>:an<span class="number">-1</span>)=[<span class="number">1</span>:an<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:c</span><br><span class="line">    dd=<span class="built_in">find</span>(data(:,an)==<span class="built_in">i</span>); </span><br><span class="line">    ai(<span class="built_in">i</span>)=<span class="built_in">length</span>(dd); </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">clear <span class="built_in">i</span></span><br><span class="line">choosen=data;</span><br><span class="line">abandon=<span class="built_in">zeros</span>(am,r);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:r</span><br><span class="line">    p=<span class="built_in">size</span>(choosen,<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:p<span class="number">-1</span></span><br><span class="line">        x=choosen;</span><br><span class="line">        x(:,<span class="built_in">j</span>)=[];</span><br><span class="line">        J(<span class="number">1</span>,<span class="built_in">j</span>)=separability_criterion(x(<span class="number">1</span>:ai(<span class="number">1</span>),:),x(ai(<span class="number">1</span>)+<span class="number">1</span>:am,:));</span><br><span class="line">        J(<span class="number">2</span>,<span class="built_in">j</span>)=choosen(am+<span class="number">1</span>,<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    J=sortrows(J',<span class="number">1</span>);</span><br><span class="line">    [row,col]==J(<span class="number">1</span>,<span class="number">2</span>); </span><br><span class="line">    abandon(:,<span class="built_in">i</span>)=choosen(:,col);</span><br><span class="line">    choosen(:,col)=[];</span><br><span class="line">    clear J</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="separability"><a href="#separability" class="headerlink" title="separability"></a>separability</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Jd</span>=<span class="title">separability</span><span class="params">(w1,w2)</span></span></span><br><span class="line">w1=w1';</span><br><span class="line">w2=w2';</span><br><span class="line">[mm1,nn1]=<span class="built_in">size</span>(w1);</span><br><span class="line">[mm2,nn2]=<span class="built_in">size</span>(w2);</span><br><span class="line">m1=mean(w1,<span class="number">2</span>);</span><br><span class="line">m2=mean(w2,<span class="number">2</span>);</span><br><span class="line">s1=<span class="built_in">zeros</span>(mm1,mm1);</span><br><span class="line">s2=<span class="built_in">zeros</span>(mm2,mm2);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:mm1</span><br><span class="line">    s1=s1+(w1(:,<span class="built_in">i</span>)-m1)*(w1(:,<span class="built_in">i</span>)-m1)';</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:mm2</span><br><span class="line">    s2=s2+(w2(:,<span class="built_in">j</span>)-m1)*(w2(:,<span class="built_in">j</span>)-m2)';</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">sw=s1+s2;</span><br><span class="line">sb=(m1-m2)*(m1-m2)';</span><br><span class="line">Jd=trace(sw+sb);</span><br></pre></td></tr></table></figure>
+<h3 id="遗传算法-2"><a href="#遗传算法-2" class="headerlink" title="遗传算法"></a>遗传算法</h3><h4 id="主程序-1"><a href="#主程序-1" class="headerlink" title="主程序"></a>主程序</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">clear all</span><br><span class="line">load sonar;</span><br><span class="line">data=sonar;</span><br><span class="line">pop=<span class="number">31</span>;</span><br><span class="line">pcr=<span class="number">0.6</span>;</span><br><span class="line">pmu=<span class="number">0.1</span>;</span><br><span class="line">L=<span class="number">150</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">100</span></span><br><span class="line">    y(<span class="built_in">i</span>)=heredity(data,pop,pcr,pmu,L);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">x=max(y);</span><br><span class="line"><span class="built_in">disp</span>(sprintf(<span class="string">'Correct rate of genetic algorithm£º%4.4f'</span>,x));</span><br></pre></td></tr></table></figure>
+<h4 id="genetic"><a href="#genetic" class="headerlink" title="genetic"></a>genetic</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[y]</span>=<span class="title">genetic</span><span class="params">(data,pop,pcr,pmu,L)</span></span></span><br><span class="line">[am,an]=<span class="built_in">size</span>(data);</span><br><span class="line">data=sortrows(data,an);</span><br><span class="line">data(am+<span class="number">1</span>,<span class="number">1</span>:an<span class="number">-1</span>)=[<span class="number">1</span>:an<span class="number">-1</span>];</span><br><span class="line">choosensize=<span class="built_in">size</span>(data,<span class="number">2</span>)<span class="number">-1</span>;</span><br><span class="line">parent=cell(<span class="number">1</span>,pop);</span><br><span class="line"><span class="keyword">for</span> ip=<span class="number">1</span>:pop</span><br><span class="line">    parent&#123;ip&#125;=<span class="built_in">rand</span>(choosensize,<span class="number">1</span>);</span><br><span class="line">    parent&#123;ip&#125;(parent&#123;ip&#125;&gt;=<span class="number">0.5</span>)=<span class="number">1</span>;</span><br><span class="line">    parent&#123;ip&#125;(parent&#123;ip&#125;&lt;<span class="number">0.5</span>)=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">clear ip</span><br><span class="line">group=parent;</span><br><span class="line">fit=cell(<span class="number">1</span>,L);</span><br><span class="line"><span class="keyword">for</span> l=<span class="number">1</span>:L</span><br><span class="line">    fit&#123;l&#125;=fitness(pop,group,data);</span><br><span class="line">    new=roulette(group,pop,fit&#123;l&#125;);</span><br><span class="line">    new=crossover(pcr,new,pop,an<span class="number">-1</span>);</span><br><span class="line">    group=mutation(new,pop,pmu,an<span class="number">-1</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">index=<span class="built_in">find</span>(group&#123;<span class="number">1</span>&#125;(:,<span class="number">1</span>)==<span class="number">1</span>);</span><br><span class="line">r=<span class="built_in">length</span>(index);</span><br><span class="line">choosen=[];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:r</span><br><span class="line">    choosen=[choosen,data(:,index(i))];</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">choosen(:,r+<span class="number">1</span>)=data(:,an);</span><br><span class="line">k=<span class="number">1</span>;</span><br><span class="line">y=knn(k,choosen,<span class="number">13</span>,<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="fitness"><a href="#fitness" class="headerlink" title="fitness"></a>fitness</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[f]</span>=<span class="title">fitness</span><span class="params">(groupsize,group,data)</span></span></span><br><span class="line">[am,an]=<span class="built_in">size</span>(data);</span><br><span class="line"><span class="keyword">for</span> m=<span class="number">1</span>:groupsize</span><br><span class="line">    index=<span class="built_in">find</span>(group&#123;m&#125;(:,<span class="number">1</span>)==<span class="number">1</span>);</span><br><span class="line">    p=<span class="built_in">length</span>(index);</span><br><span class="line">    choosen=[];</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:p</span><br><span class="line">        choosen=[choosen,data(:,index(i))];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:<span class="number">2</span></span><br><span class="line">        d=<span class="built_in">find</span>(data(:,an)==<span class="built_in">j</span>);</span><br><span class="line">        ai(<span class="built_in">j</span>)=<span class="built_in">length</span>(d);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    f(m)=separability(choosen(<span class="number">1</span>:ai(<span class="number">1</span>),:),choosen(ai(<span class="number">1</span>)+<span class="number">1</span>:am,:));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">rate=sum(f);</span><br><span class="line">f(<span class="number">2</span>,:)=[<span class="number">1</span>:groupsize];</span><br><span class="line">f=sortrows(f',<span class="number">1</span>);</span><br><span class="line">f(:,<span class="number">3</span>)=f(:,<span class="number">1</span>)/rate;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:groupsize</span><br><span class="line">    f(<span class="built_in">i</span>,<span class="number">4</span>)=sum(f(<span class="number">1</span>:<span class="built_in">i</span>,<span class="number">3</span>));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="roulette"><a href="#roulette" class="headerlink" title="roulette"></a>roulette</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[new]</span>=<span class="title">roulette</span><span class="params">(group,groupsize,fitness)</span></span></span><br><span class="line">new=cell(<span class="number">1</span>,groupsize);</span><br><span class="line">index=<span class="built_in">zeros</span>(<span class="number">1</span>,groupsize);</span><br><span class="line"><span class="keyword">if</span> max(fitness(:,<span class="number">1</span>))==<span class="number">0</span>&amp;min(fitness(:,<span class="number">1</span>))==<span class="number">0</span></span><br><span class="line">    index=<span class="built_in">ceil</span>(<span class="built_in">rand</span>(<span class="number">1</span>,groupsize)*groupsize);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    index(<span class="number">1</span>)=fitness(groupsize,<span class="number">2</span>);</span><br><span class="line">    persist=<span class="built_in">find</span>(fitness(:,<span class="number">1</span>));</span><br><span class="line">    choose=group&#123;persist&#125;;</span><br><span class="line">    rou=<span class="built_in">rand</span>(<span class="number">1</span>,groupsize);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">2</span>:groupsize,</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:groupsize,</span><br><span class="line">            <span class="keyword">if</span> rou(<span class="built_in">i</span>)&lt;fitness(<span class="built_in">j</span>,<span class="number">4</span>)</span><br><span class="line">                index(<span class="built_in">i</span>)=<span class="built_in">j</span>;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">for</span> k=<span class="number">1</span>:<span class="built_in">length</span>(index);</span><br><span class="line">        new&#123;k&#125;=group&#123;index(k)&#125;;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="crossover"><a href="#crossover" class="headerlink" title="crossover"></a>crossover</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[group]</span>=<span class="title">crossover</span><span class="params">(crossrate,group,groupsize,n)</span></span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">2</span>:<span class="number">2</span>:groupsize<span class="number">-1</span> </span><br><span class="line">    <span class="built_in">cross</span>=<span class="built_in">rand</span>;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">cross</span>&lt;crossrate </span><br><span class="line">        point=<span class="built_in">ceil</span>(<span class="built_in">rand</span>*n); </span><br><span class="line">        x=group&#123;i&#125;(point:n,:);</span><br><span class="line">        group&#123;i&#125;(point:n,:)=group&#123;i+<span class="number">1</span>&#125;(point:n,:);</span><br><span class="line">        group&#123;i+<span class="number">1</span>&#125;(point:n,:)=x;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="mutation"><a href="#mutation" class="headerlink" title="mutation"></a>mutation</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[group]</span>=<span class="title">mutation</span><span class="params">(group,groupsize,mutaterate,n)</span></span></span><br><span class="line">mutate=<span class="built_in">rand</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">2</span>:groupsize</span><br><span class="line">    <span class="keyword">if</span> mutate&lt;mutaterate</span><br><span class="line">        point=<span class="built_in">ceil</span>(<span class="built_in">rand</span>*n);</span><br><span class="line">        group&#123;i&#125;(point,<span class="number">1</span>)=xor(group&#123;i&#125;(point,<span class="number">1</span>),<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="四、数据图像"><a href="#四、数据图像" class="headerlink" title="四、数据图像"></a>四、数据图像</h2><h3 id="顺序前进法、顺序后退法"><a href="#顺序前进法、顺序后退法" class="headerlink" title="顺序前进法、顺序后退法"></a>顺序前进法、顺序后退法</h3><p>图中蓝色线为特征前进法，红色线为顺序后退法。图一横坐标为k值，图二横坐标为选择特征数，两图纵坐标均为正确率。当选择特征数为30，K取不同值时，观察正确率的变化情况。由图可得k取2时正确率较高。</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/ga1.png" alt="1"></p>
+<p>当K取2时，K近邻正确率随特征选择数的变化情况。</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/ga2.png" alt="2"></p>
+<h3 id="遗传算法-3"><a href="#遗传算法-3" class="headerlink" title="遗传算法"></a>遗传算法</h3><p>迭代150次，共进行100次运算，取正确率最大值。</p>
+<p>Correct rate of genetic algorithm：0.8462</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/模式识别/" rel="tag"># 模式识别</a>
+          
+            <a href="/tags/matlab/" rel="tag"># matlab</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/LDA降维与K近邻/" rel="next" title="LDA降维与K近邻">
+                <i class="fa fa-chevron-left"></i> LDA降维与K近邻
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/基于DSP的Kmeans图像分割/" rel="prev" title="基于DSP的Kmeans图像分割">
+                基于DSP的Kmeans图像分割 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZHOU Ziyue" />
+          <p class="site-author-name" itemprop="name">ZHOU Ziyue</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/YOYOE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/YOYOEzzy" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、概念"><span class="nav-number">1.</span> <span class="nav-text">一、概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特征提取"><span class="nav-number">1.1.</span> <span class="nav-text">特征提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征选择"><span class="nav-number">1.2.</span> <span class="nav-text">特征选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺序前进法"><span class="nav-number">1.3.</span> <span class="nav-text">顺序前进法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺序后退法"><span class="nav-number">1.4.</span> <span class="nav-text">顺序后退法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法"><span class="nav-number">1.5.</span> <span class="nav-text">遗传算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、分析"><span class="nav-number">2.</span> <span class="nav-text">二、分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SFS、SBS"><span class="nav-number">2.1.</span> <span class="nav-text">SFS、SBS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法-1"><span class="nav-number">2.2.</span> <span class="nav-text">遗传算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据分析"><span class="nav-number">2.3.</span> <span class="nav-text">数据分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、核心代码"><span class="nav-number">3.</span> <span class="nav-text">三、核心代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SFS、SBS-1"><span class="nav-number">3.1.</span> <span class="nav-text">SFS、SBS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主程序"><span class="nav-number">3.1.1.</span> <span class="nav-text">主程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SFS"><span class="nav-number">3.1.2.</span> <span class="nav-text">SFS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SBS"><span class="nav-number">3.1.3.</span> <span class="nav-text">SBS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#separability"><span class="nav-number">3.1.4.</span> <span class="nav-text">separability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法-2"><span class="nav-number">3.2.</span> <span class="nav-text">遗传算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主程序-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">主程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#genetic"><span class="nav-number">3.2.2.</span> <span class="nav-text">genetic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fitness"><span class="nav-number">3.2.3.</span> <span class="nav-text">fitness</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#roulette"><span class="nav-number">3.2.4.</span> <span class="nav-text">roulette</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crossover"><span class="nav-number">3.2.5.</span> <span class="nav-text">crossover</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mutation"><span class="nav-number">3.2.6.</span> <span class="nav-text">mutation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、数据图像"><span class="nav-number">4.</span> <span class="nav-text">四、数据图像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#顺序前进法、顺序后退法"><span class="nav-number">4.1.</span> <span class="nav-text">顺序前进法、顺序后退法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法-3"><span class="nav-number">4.2.</span> <span class="nav-text">遗传算法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZHOU Ziyue</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

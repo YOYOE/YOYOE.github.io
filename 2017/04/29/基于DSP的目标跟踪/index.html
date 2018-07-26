@@ -1,0 +1,779 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="图像处理,DSP,c," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="基于DSP的目标跟踪  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，初步了解运动目标跟踪算法基本原理，体会并学习如何用该算法实现视频跟踪，并完成模板匹配跟踪部分的程序。 二、实现方案实验原理模板匹配就是在一幅大图像中搜寻目标，已知在该图中有要寻找的目标，且该目标与模板有相同的尺寸、方向和图像，通过一定的算法可以在图中找到目标，确定其坐标位置。 设模板T叠放">
+<meta name="keywords" content="图像处理,DSP,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于DSP的目标跟踪">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/基于DSP的目标跟踪/index.html">
+<meta property="og:site_name" content="YOYOE">
+<meta property="og:description" content="基于DSP的目标跟踪  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，初步了解运动目标跟踪算法基本原理，体会并学习如何用该算法实现视频跟踪，并完成模板匹配跟踪部分的程序。 二、实现方案实验原理模板匹配就是在一幅大图像中搜寻目标，已知在该图中有要寻找的目标，且该目标与模板有相同的尺寸、方向和图像，通过一定的算法可以在图中找到目标，确定其坐标位置。 设模板T叠放">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA1.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA2.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA3.png">
+<meta property="og:updated_time" content="2017-04-29T10:50:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于DSP的目标跟踪">
+<meta name="twitter:description" content="基于DSP的目标跟踪  一、目标利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，初步了解运动目标跟踪算法基本原理，体会并学习如何用该算法实现视频跟踪，并完成模板匹配跟踪部分的程序。 二、实现方案实验原理模板匹配就是在一幅大图像中搜寻目标，已知在该图中有要寻找的目标，且该目标与模板有相同的尺寸、方向和图像，通过一定的算法可以在图中找到目标，确定其坐标位置。 设模板T叠放">
+<meta name="twitter:image" content="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/29/基于DSP的目标跟踪/"/>
+
+
+
+
+
+  <title>基于DSP的目标跟踪 | YOYOE</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YOYOE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">It fills you with determination.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/基于DSP的目标跟踪/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZHOU Ziyue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YOYOE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于DSP的目标跟踪
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T18:38:42+08:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DSP/" itemprop="url" rel="index">
+                    <span itemprop="name">DSP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>基于DSP的目标跟踪</strong></p>
+<hr>
+<h2 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h2><p>利用VisualDSP++ 5.0、仿真器、EBF-561实验平台实现该算法，初步了解运动目标跟踪算法基本原理，体会并学习如何用该算法实现视频跟踪，并完成模板匹配跟踪部分的程序。</p>
+<h2 id="二、实现方案"><a href="#二、实现方案" class="headerlink" title="二、实现方案"></a>二、实现方案</h2><h3 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h3><p>模板匹配就是在一幅大图像中搜寻目标，已知在该图中有要寻找的目标，且该目标与模板有相同的尺寸、方向和图像，通过一定的算法可以在图中找到目标，确定其坐标位置。</p>
+<p>设模板T叠放在搜索图S上平移，模板覆盖下的那块搜索图叫做子图，这块子图的左上角像素点为S的坐标，即参考点。</p>
+<p>我们可以用下式来衡量T和S的相似程度：</p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA1.png" alt="1"></p>
+<p>展开上式，则有：</p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA2.png" alt="2"></p>
+<a id="more"></a>
+<p>上式等号右边第三项表示模板的总能量，是一个常数与坐标位置无关，第一项是模板覆盖下那块子图的能量，它随坐标位置的改变而缓慢改变，这两项都与模板匹配无关。第二项是子图像和模板的互相关，T和S匹配时该项有最大值。</p>
+<p>改进的用于匹配的相关系数计算公式如下：</p>
+<p> <img src="http://op2gp4y85.bkt.clouddn.com/%E8%B7%9F%E8%B8%AA3.png" alt="3"></p>
+<p>当模板和子图完全一样时，相关系数R=1。在被搜索图中逐个像素点地移动模板图像T，同时计算每处子图与模板的相关系数，当移过整幅图像S之后，找出R的最大值，最大响应点坐标即为最佳匹配的左上角点。以该坐标为起始点，范围大小以模板的大小为准就可以锁定目标。</p>
+<h3 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h3><p>（1）首先取得待跟踪的目标图像，该目标图像通常较小，称该图像为模板，以T 表示； </p>
+<p>（2）定义匹配公式以备在移动模板时得到匹配度； </p>
+<p>（3）把模板T 在待检测的图像（往往是视频中的一帧帧图像）中移动，在模板覆盖下那块搜索图叫做子图，每移动到一个位置就按定义的匹配公式计算匹配度，直至移动完整幅图像为止； </p>
+<p>（4）按照匹配度的大小，选择匹配度最大（即最匹配）的位置，此位置即为最佳匹配位置，以此点为起始点，范围的大小就以模板的大小为准，即可锁定目标； </p>
+<p>（5）针对视频中的每一帧图像执行步骤（3）~（4），实现目标跟踪的目的。 </p>
+<h2 id="三、核心代码"><a href="#三、核心代码" class="headerlink" title="三、核心代码"></a>三、核心代码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">readTemData</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int_t</span> i,j;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> temp;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;Chang;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;Kuan*<span class="number">3</span>;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			TempBuffer_img[i][j] = Inputdata[i*Kuan*<span class="number">3</span>+j+<span class="number">54</span>]; </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;Chang;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;Kuan;j++)</span><br><span class="line">		&#123;</span><br><span class="line">	   		imageRtemp[i*Kuan+j] = TempBuffer_img[i][j*<span class="number">3</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;Chang*Kuan;i++)</span><br><span class="line">	&#123;</span><br><span class="line">	</span><br><span class="line">	   imageTemp[Chang*Kuan<span class="number">-1</span>-i] = imageRtemp[i];</span><br><span class="line">	&#125;</span><br><span class="line">				</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span>  <span class="title">cal_r</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> s[],<span class="keyword">unsigned</span> <span class="keyword">char</span> t[],<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,k=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">long</span> <span class="keyword">double</span> r=<span class="number">0</span>,a=<span class="number">0</span>,b=<span class="number">0</span>,c=<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (i=x;i&lt;x+<span class="number">36</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(j=y;j&lt;y+<span class="number">52</span>;j++)</span><br><span class="line">		&#123;</span><br><span class="line">			a=a+s[<span class="number">120</span>*i+j]*t[k];</span><br><span class="line">			b=b+s[<span class="number">120</span>*i+j]*s[<span class="number">120</span>*i+j];</span><br><span class="line">			c=c+t[k]*t[k];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	r=a/(<span class="built_in">sqrt</span>(b))/<span class="built_in">sqrt</span>(c);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">1000</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">1000</span>;j++)</span><br><span class="line">		&#123;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TemplateMatch</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> image[],<span class="keyword">unsigned</span> <span class="keyword">char</span> imageTemp[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,j,x,y;</span><br><span class="line">	<span class="keyword">long</span> <span class="keyword">double</span> temp=<span class="number">-2</span>,r; </span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">44</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;<span class="number">68</span>;j++)</span><br><span class="line">		&#123;</span><br><span class="line">				r=cal_r(image,imageTemp,i,j);</span><br><span class="line">			    <span class="keyword">if</span>(r&gt;=temp)</span><br><span class="line">			    &#123;</span><br><span class="line">			    	temp=r;</span><br><span class="line">			    	x=i;</span><br><span class="line">			    	y=j;</span><br><span class="line">			    &#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=y;i&lt;y+<span class="number">52</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		image[i+x*<span class="number">120</span>]=<span class="number">0</span>;</span><br><span class="line">		image[i+(x+<span class="number">36</span>)*<span class="number">120</span>]=<span class="number">0</span>;         </span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">for</span>(j=x;j&lt;x+<span class="number">36</span>;j++)</span><br><span class="line">	&#123;</span><br><span class="line">		image[y+j*<span class="number">120</span>]=<span class="number">0</span>;</span><br><span class="line">		image[(y+<span class="number">52</span>)+j*<span class="number">120</span>]=<span class="number">0</span>;         </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>                                                                                                                                                                               </span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	Init_EBIU();</span><br><span class="line">	lcd_init();</span><br><span class="line">	readTemData();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> m;</span><br><span class="line">	<span class="keyword">for</span>(m=<span class="number">1</span>;m&lt;=<span class="number">12</span>;m++)</span><br><span class="line">   	&#123;</span><br><span class="line">   		readData(m);</span><br><span class="line">   		</span><br><span class="line">   		<span class="keyword">switch</span>(m)</span><br><span class="line">   		&#123;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">   				TemplateMatch(image1,imageTemp); </span><br><span class="line">				bmp2rgb24(image1);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">   				TemplateMatch(image2,imageTemp); </span><br><span class="line">				bmp2rgb24(image2);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">   				TemplateMatch(image3,imageTemp); </span><br><span class="line">				bmp2rgb24(image3);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">   				TemplateMatch(image4,imageTemp); </span><br><span class="line">				bmp2rgb24(image4);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">   				TemplateMatch(image5,imageTemp); </span><br><span class="line">				bmp2rgb24(image5);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">   				TemplateMatch(image6,imageTemp); </span><br><span class="line">				bmp2rgb24(image6);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">   				TemplateMatch(image7,imageTemp);</span><br><span class="line">				bmp2rgb24(image7);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">   				TemplateMatch(image8,imageTemp);</span><br><span class="line">				bmp2rgb24(image8);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">   				TemplateMatch(image9,imageTemp); </span><br><span class="line">				bmp2rgb24(image9);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				delay();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">   				TemplateMatch(image10,imageTemp); </span><br><span class="line">				bmp2rgb24(image10);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">11</span>:</span><br><span class="line">   				TemplateMatch(image11,imageTemp); </span><br><span class="line">				bmp2rgb24(image11);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">   			<span class="keyword">break</span>;</span><br><span class="line">   			<span class="keyword">case</span> <span class="number">12</span>:</span><br><span class="line">   				TemplateMatch(image12,imageTemp); </span><br><span class="line">				bmp2rgb24(image12);</span><br><span class="line">				Init_Platform_TFT();</span><br><span class="line">				<span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">   			<span class="keyword">break</span>;   			 			</span><br><span class="line">   		&#125;</span><br><span class="line">   	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+            <a href="/tags/DSP/" rel="tag"># DSP</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/基于DSP的MRF图像分割/" rel="next" title="基于DSP的MRF图像分割">
+                <i class="fa fa-chevron-left"></i> 基于DSP的MRF图像分割
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/10/人工智能智能系统指南笔记（二）/" rel="prev" title="人工智能智能系统指南笔记（二）">
+                人工智能智能系统指南笔记（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZHOU Ziyue" />
+          <p class="site-author-name" itemprop="name">ZHOU Ziyue</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/YOYOE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/YOYOEzzy" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、目标"><span class="nav-number">1.</span> <span class="nav-text">一、目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、实现方案"><span class="nav-number">2.</span> <span class="nav-text">二、实现方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验原理"><span class="nav-number">2.1.</span> <span class="nav-text">实验原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验步骤"><span class="nav-number">2.2.</span> <span class="nav-text">实验步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、核心代码"><span class="nav-number">3.</span> <span class="nav-text">三、核心代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZHOU Ziyue</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

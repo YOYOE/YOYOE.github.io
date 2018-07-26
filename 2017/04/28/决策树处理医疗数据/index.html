@@ -1,0 +1,774 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据挖掘,python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="决策树处理医疗数据  一、目标将所给医疗数据进行预处理，根据病人的四个属性——性别、年龄、病程及术中责任血管，对其与即刻面抽之间的联系进行分析。利用决策树分类方法编程实现数据的分类并绘图。  二、算法思想在数据预处理中进行如下处理：  性别(gender)：F为1，M为2。年龄(age)：0-40岁为1，40-50岁为2，50-60岁为3，60-70岁为4。病程(course)：0-3年为1，3-">
+<meta name="keywords" content="数据挖掘,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="决策树处理医疗数据">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/决策树处理医疗数据/index.html">
+<meta property="og:site_name" content="YOYOE">
+<meta property="og:description" content="决策树处理医疗数据  一、目标将所给医疗数据进行预处理，根据病人的四个属性——性别、年龄、病程及术中责任血管，对其与即刻面抽之间的联系进行分析。利用决策树分类方法编程实现数据的分类并绘图。  二、算法思想在数据预处理中进行如下处理：  性别(gender)：F为1，M为2。年龄(age)：0-40岁为1，40-50岁为2，50-60岁为3，60-70岁为4。病程(course)：0-3年为1，3-">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E5%95%8A%E5%95%8A%E5%95%8A.png">
+<meta property="og:image" content="http://op2gp4y85.bkt.clouddn.com/%E5%86%B3%E7%AD%96%E6%A0%91.png">
+<meta property="og:updated_time" content="2017-04-29T04:40:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="决策树处理医疗数据">
+<meta name="twitter:description" content="决策树处理医疗数据  一、目标将所给医疗数据进行预处理，根据病人的四个属性——性别、年龄、病程及术中责任血管，对其与即刻面抽之间的联系进行分析。利用决策树分类方法编程实现数据的分类并绘图。  二、算法思想在数据预处理中进行如下处理：  性别(gender)：F为1，M为2。年龄(age)：0-40岁为1，40-50岁为2，50-60岁为3，60-70岁为4。病程(course)：0-3年为1，3-">
+<meta name="twitter:image" content="http://op2gp4y85.bkt.clouddn.com/%E5%95%8A%E5%95%8A%E5%95%8A.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/28/决策树处理医疗数据/"/>
+
+
+
+
+
+  <title>决策树处理医疗数据 | YOYOE</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YOYOE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">It fills you with determination.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/28/决策树处理医疗数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZHOU Ziyue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YOYOE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                决策树处理医疗数据
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-28T23:03:43+08:00">
+                2017-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据挖掘/" itemprop="url" rel="index">
+                    <span itemprop="name">数据挖掘</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>决策树处理医疗数据</strong></p>
+<hr>
+<h2 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h2><p>将所给医疗数据进行预处理，根据病人的四个属性——性别、年龄、病程及术中责任血管，对其与即刻面抽之间的联系进行分析。利用决策树分类方法编程实现数据的分类并绘图。 </p>
+<h2 id="二、算法思想"><a href="#二、算法思想" class="headerlink" title="二、算法思想"></a>二、算法思想</h2><p>在数据预处理中进行如下处理： </p>
+<p>性别(gender)：F为1，M为2。年龄(age)：0-40岁为1，40-50岁为2，50-60岁为3，60-70岁为4。病程(course)：0-3年为1，3-6年为2，6-9年为3，9-12年为4，12年以上为5。术中责任血管(vessel)：AICA为 1，PICA为2，AICA、PICA为3，AICA、VA为4，PICA、CA为5，其余为0。是否即刻面抽：是为1，否为0。 </p>
+<p>在决策树 ID3 算法中，通过求概率进而求信息熵，通过求信息熵进而求信息增益，以信息增益为标准挑选信息增益最大的因素作为节点。在创建树的过程中进行遍历，如果类别完全相同则停止划分，如果遍历完所有特征值则选取出现次数最多的类标签。最后以字典类型输出数据。 </p>
+<p>在决策树绘图中，首先计算出树中叶子节点的个数和树的深度，然后对节点和节点间部分的绘制分别进行函数定义。最后在整个决策树的绘制过程中，利用深度和叶子节点个数对图像区域进行划分，以防止出现绘图中节点过密的情况产生。 </p>
+<a id="more"></a>
+<h2 id="三、核心代码"><a href="#三、核心代码" class="headerlink" title="三、核心代码"></a>三、核心代码</h2><h3 id="1、决策树算法"><a href="#1、决策树算法" class="headerlink" title="1、决策树算法"></a>1、决策树算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">import</span> math <span class="keyword">as</span> mh </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">entropy</span><span class="params">(dataset)</span>:</span></span><br><span class="line">	num = len(dataset)</span><br><span class="line">	label = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> vec <span class="keyword">in</span> dataset:</span><br><span class="line">		labelC = vec[<span class="number">-1</span>]</span><br><span class="line">		<span class="keyword">if</span> labelC <span class="keyword">not</span> <span class="keyword">in</span> label.keys():</span><br><span class="line">			label[labelC] = <span class="number">0</span></span><br><span class="line">		label[labelC] += <span class="number">1</span></span><br><span class="line">	ent = <span class="number">0.0</span></span><br><span class="line">	<span class="keyword">for</span> key <span class="keyword">in</span> label:</span><br><span class="line">		pro = float(label[key]) / num</span><br><span class="line">		ent -= pro * mh.log(pro, <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">return</span> ent</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">split</span><span class="params">(dataset, temp, value)</span>:</span></span><br><span class="line">	dataAf = []</span><br><span class="line">	<span class="keyword">for</span> vec <span class="keyword">in</span> dataset:</span><br><span class="line">		<span class="keyword">if</span> vec[temp] == value:</span><br><span class="line">			vecAf = vec[: temp]</span><br><span class="line">			vecAf.extend(vec[temp+<span class="number">1</span>:])</span><br><span class="line">			dataAf.append(vecAf)</span><br><span class="line">	<span class="keyword">return</span> dataAf</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">choose</span><span class="params">(dataset)</span>:</span></span><br><span class="line">	allent = entropy(dataset)</span><br><span class="line">	numlab = len(dataset[<span class="number">0</span>]) - <span class="number">1</span></span><br><span class="line">	gainmax = <span class="number">0.0</span></span><br><span class="line">	feature = <span class="number">-1</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(numlab):</span><br><span class="line">		listAf = [example[i] <span class="keyword">for</span> example <span class="keyword">in</span> dataset]</span><br><span class="line">		listU = set(listAf)</span><br><span class="line">		entAf = <span class="number">0.0</span></span><br><span class="line">		<span class="keyword">for</span> value <span class="keyword">in</span> listU:</span><br><span class="line">			datasetS = split(dataset, i, value)</span><br><span class="line">			pro = len(datasetS) / float(len(dataset))</span><br><span class="line">			entAf += pro * entropy(datasetS)</span><br><span class="line">		gain = allent - entAf</span><br><span class="line">		<span class="keyword">if</span> (gain &gt; gainmax):</span><br><span class="line">			gainmax = gain</span><br><span class="line">			feature = i </span><br><span class="line">	<span class="keyword">return</span> feature</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">most</span><span class="params">(listR)</span>:</span></span><br><span class="line">	listcount = &#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> vote <span class="keyword">in</span> listR:</span><br><span class="line">		<span class="keyword">if</span> vote <span class="keyword">not</span> <span class="keyword">in</span> listcount.keys():</span><br><span class="line">			listcount[vote] = <span class="number">0</span></span><br><span class="line">		listcount[vote] += <span class="number">1</span></span><br><span class="line">	listSort = sorted(listcount.items(), key = operator.itemgetter(<span class="number">1</span>), reverse = <span class="keyword">True</span>)</span><br><span class="line">	<span class="keyword">return</span> listSort[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(dataset, label)</span>:</span>                                                           </span><br><span class="line">    listR = [example[<span class="number">-1</span>] <span class="keyword">for</span> example <span class="keyword">in</span> dataset]</span><br><span class="line">    <span class="keyword">if</span> listR.count(listR[<span class="number">0</span>]) == len(listR):</span><br><span class="line">	    <span class="keyword">return</span> listR[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> (len(dataset[<span class="number">0</span>]) == <span class="number">1</span>):</span><br><span class="line">	    <span class="keyword">return</span> most(listR)</span><br><span class="line">    featureCH = choose(dataset)</span><br><span class="line">    featureLabel = label[featureCH]</span><br><span class="line">    tree = &#123;featureLabel: &#123;&#125;&#125;</span><br><span class="line">    <span class="keyword">del</span>(label[featureCH])</span><br><span class="line">    featureValue = [example[featureCH] <span class="keyword">for</span> example <span class="keyword">in</span> dataset]</span><br><span class="line">    listU = set(featureValue)</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> listU:</span><br><span class="line">        labelfin = label[:]</span><br><span class="line">        tree[featureLabel][value] = create(split(dataset, featureCH, value), labelfin)</span><br><span class="line">    <span class="keyword">return</span> tree</span><br></pre></td></tr></table></figure>
+<h3 id="2、决策树绘制"><a href="#2、决策树绘制" class="headerlink" title="2、决策树绘制"></a>2、决策树绘制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">DN = dict(boxstyle=<span class="string">"round4"</span>, fc=<span class="string">"0.8"</span>)</span><br><span class="line">LN = dict(boxstyle=<span class="string">"round4"</span>, fc=<span class="string">"0.8"</span>)</span><br><span class="line">line = dict(arrowstyle=<span class="string">"&lt;-"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">number</span><span class="params">(tree)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    size1 = list(tree.keys())</span><br><span class="line">    str1 = size1[<span class="number">0</span>]</span><br><span class="line">    dict2 = tree[str1]</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> dict2.keys():</span><br><span class="line">        <span class="keyword">if</span> type(dict2[key]).__name__==<span class="string">'dict'</span>:</span><br><span class="line">            num += number(dict2[key])</span><br><span class="line">        <span class="keyword">else</span>:   </span><br><span class="line">            num +=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">depth</span><span class="params">(tree)</span>:</span></span><br><span class="line">    depthmax = <span class="number">0</span></span><br><span class="line">    size1 = list(tree.keys())</span><br><span class="line">    str1 = size1[<span class="number">0</span>]</span><br><span class="line">    dict2 = tree[str1]</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> dict2.keys():</span><br><span class="line">        <span class="keyword">if</span> type(dict2[key]).__name__==<span class="string">'dict'</span>:</span><br><span class="line">            depthcnow = <span class="number">1</span> + depth(dict2[key])</span><br><span class="line">        <span class="keyword">else</span>:   </span><br><span class="line">            depthcnow = <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> depthcnow &gt; depthmax: </span><br><span class="line">            depthmax = depthcnow</span><br><span class="line">    <span class="keyword">return</span> depthmax</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plotnode</span><span class="params">(name, center, parents, label)</span>:</span></span><br><span class="line">    PLOT.ax1.annotate(name, xy=parents,  xycoords=<span class="string">'axes fraction'</span>,</span><br><span class="line">             xytext=center, textcoords=<span class="string">'axes fraction'</span>,</span><br><span class="line">             va=<span class="string">"center"</span>, ha=<span class="string">"center"</span>, bbox=label, arrowprops=line )</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plotmid</span><span class="params">(center, parents, name)</span>:</span></span><br><span class="line">    midx = (parents[<span class="number">0</span>]-center[<span class="number">0</span>])/<span class="number">2</span> + center[<span class="number">0</span>]</span><br><span class="line">    midy = (parents[<span class="number">1</span>]-center[<span class="number">1</span>])/<span class="number">2</span> + center[<span class="number">1</span>]</span><br><span class="line">    PLOT.ax1.text(midx, midy, name, va=<span class="string">"center"</span>, ha=<span class="string">"center"</span>, rotation=<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plottree</span><span class="params">(tree, parents, name)</span>:</span></span><br><span class="line">    num = number(tree) </span><br><span class="line">    size1 = list(tree.keys())</span><br><span class="line">    str1 = size1[<span class="number">0</span>]  </span><br><span class="line">    center = (plottree.x + (<span class="number">1</span> + float(num))/<span class="number">2</span>/plottree.num, plottree.y)</span><br><span class="line">    plotnode(str1, center, parents, DN)</span><br><span class="line">    plotmid(center, parents, name)</span><br><span class="line">    dict2 = tree[str1]</span><br><span class="line">    plottree.y = plottree.y - <span class="number">1</span>/plottree.depth</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> dict2.keys():</span><br><span class="line">        <span class="keyword">if</span> type(dict2[key]).__name__==<span class="string">'dict'</span>:  </span><br><span class="line">            plottree(dict2[key],center,str(key))       </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            plottree.x = plottree.x + <span class="number">1</span>/plottree.num</span><br><span class="line">            plotnode(dict2[key], (plottree.x, plottree.y), center, LN)</span><br><span class="line">            plotmid((plottree.x, plottree.y), center, str(key))</span><br><span class="line">    plottree.y = plottree.y + <span class="number">1</span>/plottree.depth</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PLOT</span><span class="params">(tree)</span>:</span></span><br><span class="line">    axis = dict(xticks=[], yticks=[])</span><br><span class="line">    PLOT.ax1 = plt.subplot(frameon=<span class="keyword">False</span>, **axis)  </span><br><span class="line">    plottree.num = float(number(tree))</span><br><span class="line">    plottree.depth = float(depth(tree))</span><br><span class="line">    plottree.x = <span class="number">-0.5</span>/plottree.num; </span><br><span class="line">    plottree.y = <span class="number">1</span>;</span><br><span class="line">    plottree(tree, (<span class="number">0.5</span>,<span class="number">1</span>), <span class="string">''</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="四、结果图像"><a href="#四、结果图像" class="headerlink" title="四、结果图像"></a>四、结果图像</h2><ol>
+<li><p>决策树</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/%E5%95%8A%E5%95%8A%E5%95%8A.png" alt="决策树"></p>
+</li>
+<li><p>绘制后决策树</p>
+<p><img src="http://op2gp4y85.bkt.clouddn.com/%E5%86%B3%E7%AD%96%E6%A0%91.png" alt="绘制后决策树"></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据挖掘/" rel="tag"># 数据挖掘</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/28/Kmeans图像分割及聚类/" rel="next" title="Kmeans图像分割及聚类">
+                <i class="fa fa-chevron-left"></i> Kmeans图像分割及聚类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/十字路口交通控制系统设计/" rel="prev" title="十字路口交通控制系统设计">
+                十字路口交通控制系统设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ZHOU Ziyue" />
+          <p class="site-author-name" itemprop="name">ZHOU Ziyue</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/YOYOE" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/YOYOEzzy" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、目标"><span class="nav-number">1.</span> <span class="nav-text">一、目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、算法思想"><span class="nav-number">2.</span> <span class="nav-text">二、算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、核心代码"><span class="nav-number">3.</span> <span class="nav-text">三、核心代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、决策树算法"><span class="nav-number">3.1.</span> <span class="nav-text">1、决策树算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、决策树绘制"><span class="nav-number">3.2.</span> <span class="nav-text">2、决策树绘制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、结果图像"><span class="nav-number">4.</span> <span class="nav-text">四、结果图像</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZHOU Ziyue</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
